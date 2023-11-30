@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "922544159071",
+    "project_id": "bargainbuddy-47407",
+    "storage_bucket": "bargainbuddy-47407.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:922544159071:android:a698dd9d7989eaa4f5deea",
+        "android_client_info": {
+          "package_name": "com.example.bargainbuddy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "922544159071-8kq08j5ho9ogu37l0r6e665hd80osnt4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCCaLfMY-9gDWkods6TmBkVBnInoaouV08"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "922544159071-8kq08j5ho9ogu37l0r6e665hd80osnt4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
