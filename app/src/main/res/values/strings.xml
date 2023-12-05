@@ -15,4 +15,26 @@
     <string name="by_continuing_you_agree_to_our_terms_and_service_and_privacy_policy">By continuing you agree to our Terms and Service and Privacy Policy</string>
     <string name="already_have_an_account">Already have an account?</string>
     <string name="check_if_you_are_creating_an_account_for_your_business">Check if you are creating an account for your business</string>
+    <string name="upload_promotion">Upload Promotion</string>
+    <string name="title">Title</string>
+    <string name="type_here">Type here</string>
+    <string name="promo_code">Promo Code</string>
+    <string name="description">Description</string>
+    <string name="category">Category</string>
+    <string name="previous_price">Previous price</string>
+    <string name="new_price">New price</string>
+    <string name="expiration_date">Expiration date</string>
+    <string name="_00_00_00">00/00/00</string>
+
+    <string-array name="category">
+        <item>Fresh Fruits and Vegetable</item>
+        <item>Cooking Oil and Ghee</item>
+        <item>Meat and Fish</item>
+        <item>Bakery and Snacks</item>
+        <item>Dairy and Eggs</item>
+        <item>Beverages</item>
+        <item>Organic</item>
+        <item>Baskets</item>
+        <item>Others</item>
+    </string-array>
 </resources>
