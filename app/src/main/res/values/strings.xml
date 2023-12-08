@@ -25,6 +25,9 @@
     <string name="new_price">New price</string>
     <string name="expiration_date">Expiration date</string>
     <string name="_00_00_00">00/00/00</string>
+    <string name="upload">Upload</string>
+    <string name="add_image">Add Image</string>
+    <string name="upload_image">upload image</string>
 
     <string-array name="category">
         <item>Fresh Fruits and Vegetable</item>
