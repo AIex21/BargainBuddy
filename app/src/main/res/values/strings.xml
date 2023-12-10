@@ -30,6 +30,7 @@
     <string name="upload_image">upload image</string>
 
     <string-array name="category">
+        <item>Choose category</item>
         <item>Fresh Fruits and Vegetable</item>
         <item>Cooking Oil and Ghee</item>
         <item>Meat and Fish</item>
