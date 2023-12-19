@@ -28,6 +28,8 @@
     <string name="upload">Upload</string>
     <string name="add_image">Add Image</string>
     <string name="upload_image">upload image</string>
+    <string name="offers_for_you">Offers for you</string>
+    <string name="plus">+</string>
 
     <string-array name="category">
         <item>Choose category</item>
@@ -36,6 +38,7 @@
         <item>Meat and Fish</item>
         <item>Bakery and Snacks</item>
         <item>Dairy and Eggs</item>
+        <item>Pasta and Grains</item>
         <item>Beverages</item>
         <item>Organic</item>
         <item>Baskets</item>
