@@ -75,7 +75,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/previousPrice"
                     android:layout_marginStart="8dp"
-                    android:text="10"
+                    android:text="@string/previous_price_example"
                     android:foreground="@drawable/strikethrough_foreground"
                     android:textColor="@color/apps_secondary_item"
                     android:textSize="20sp"/>
@@ -84,7 +84,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:text="€"
+                    android:text="@string/euro"
                     android:textColor="@color/apps_secondary_item"
                     android:textSize="20sp"/>
 
@@ -93,7 +93,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/newPrice"
                     android:layout_marginStart="8dp"
-                    android:text="8"
+                    android:text="@string/new_price_example"
                     android:textColor="@color/black"
                     android:textSize="20sp"/>
 
@@ -101,7 +101,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:text="€"
+                    android:text="@string/euro"
                     android:textColor="@color/black"
                     android:textSize="20sp"/>
 

@@ -30,6 +30,16 @@
     <string name="upload_image">upload image</string>
     <string name="offers_for_you">Offers for you</string>
     <string name="plus">+</string>
+    <string name="store">Store</string>
+    <string name="previous_price_example">10</string>
+    <string name="euro">€</string>
+    <string name="new_price_example">8</string>
+    <string name="description_example">Experience the crispness of Jumbo\'s finest apples! Use code JUMBOAPPLE10 for an extra 10% off on all apple varieties.</string>
+    <string name="discount_details">Discount Details</string>
+    <string name="promo_code_example">JUMBOAPPLE10</string>
+    <string name="add_to_favorite">Add To Favourite</string>
+    <string name="go_back_button"><![CDATA[<]]></string>
+    <string name="available_until">Available Until:</string>
 
     <string-array name="category">
         <item>Choose category</item>

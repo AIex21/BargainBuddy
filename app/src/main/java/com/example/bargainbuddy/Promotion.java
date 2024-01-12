@@ -1,12 +1,16 @@
 package com.example.bargainbuddy;
 
 import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Promotion {
+public class Promotion implements Parcelable {
     private String title;
     private String store;
     private String promoCode;
@@ -101,5 +105,48 @@ public class Promotion {
 
     public void setImageURI(String imageURI) {
         this.imageURI = imageURI;
+    }
+
+    // Parcelable implementation
+    protected Promotion(Parcel in) {
+        title = in.readString();
+        store = in.readString();
+        promoCode = in.readString();
+        description = in.readString();
+        category = in.readString();
+        previousPrice = in.readFloat();
+        newPrice = in.readFloat();
+        expirationDate = in.readString();
+        imageURI = in.readString();
+    }
+
+    public static final Creator<Promotion> CREATOR = new Creator<Promotion>() {
+        @Override
+        public Promotion createFromParcel(Parcel in) {
+            return new Promotion(in);
+        }
+
+        @Override
+        public Promotion[] newArray(int size) {
+            return new Promotion[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(title);
+        dest.writeString(store);
+        dest.writeString(promoCode);
+        dest.writeString(description);
+        dest.writeString(category);
+        dest.writeFloat(previousPrice);
+        dest.writeFloat(newPrice);
+        dest.writeString(expirationDate);
+        dest.writeString(imageURI);
     }
 }

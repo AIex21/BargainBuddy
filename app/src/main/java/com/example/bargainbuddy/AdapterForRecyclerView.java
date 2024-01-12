@@ -1,8 +1,6 @@
 package com.example.bargainbuddy;
 
 import android.content.Context;
-import android.graphics.Paint;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,10 +17,12 @@ public class AdapterForRecyclerView extends RecyclerView.Adapter<AdapterForRecyc
 
     Context context;
     ArrayList<Promotion> promotionArrayList;
+    private final InterfaceForRecyclerView interfaceForRecyclerView;
 
-    public AdapterForRecyclerView(Context context, ArrayList<Promotion> promotionArrayList) {
+    public AdapterForRecyclerView(Context context, ArrayList<Promotion> promotionArrayList, InterfaceForRecyclerView interfaceForRecyclerView) {
         this.context = context;
         this.promotionArrayList = promotionArrayList;
+        this.interfaceForRecyclerView = interfaceForRecyclerView;
     }
 
     @NonNull
@@ -31,7 +31,7 @@ public class AdapterForRecyclerView extends RecyclerView.Adapter<AdapterForRecyc
 
         View v = LayoutInflater.from(context).inflate(R.layout.item_promo, parent, false);
 
-        return new MyViewHolder(v);
+        return new MyViewHolder(v, interfaceForRecyclerView);
     }
 
     @Override
@@ -60,13 +60,26 @@ public class AdapterForRecyclerView extends RecyclerView.Adapter<AdapterForRecyc
         ImageView image;
         TextView title, store, previousPrice, newPrice;
 
-        public MyViewHolder(@NonNull View itemView) {
+        public MyViewHolder(@NonNull View itemView, InterfaceForRecyclerView interfaceForRecyclerView) {
             super(itemView);
             image = itemView.findViewById(R.id.imageItem);
             title = itemView.findViewById(R.id.title);
             store = itemView.findViewById(R.id.store);
             previousPrice = itemView.findViewById(R.id.previousPrice);
             newPrice = itemView.findViewById(R.id.newPrice);
+
+            image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (interfaceForRecyclerView != null) {
+                        int position = getAdapterPosition();
+
+                        if (position != RecyclerView.NO_POSITION) {
+                            interfaceForRecyclerView.onItemClick(position);
+                        }
+                    }
+                }
+            });
         }
     }
 }

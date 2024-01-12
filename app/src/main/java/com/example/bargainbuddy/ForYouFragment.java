@@ -1,6 +1,6 @@
 package com.example.bargainbuddy;
 
-import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,23 +13,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.firebase.Firebase;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link ForYouFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ForYouFragment extends Fragment {
+public class ForYouFragment extends Fragment implements InterfaceForRecyclerView{
 
     private RecyclerView recyclerView;
     private ArrayList<Promotion> promotionArrayList;
@@ -89,7 +90,7 @@ public class ForYouFragment extends Fragment {
 
         db = FirebaseDatabase.getInstance("https://bargainbuddy-47407-default-rtdb.europe-west1.firebasedatabase.app/");
         promotionArrayList = new ArrayList<Promotion>();
-        myAdapter = new AdapterForRecyclerView(requireContext(), promotionArrayList);
+        myAdapter = new AdapterForRecyclerView(requireContext(), promotionArrayList, this);
 
         recyclerView.setAdapter(myAdapter);
 
@@ -129,5 +130,17 @@ public class ForYouFragment extends Fragment {
 
             }
         });
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        Fragment fragment = new ItemViewFragment();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("promotion", promotionArrayList.get(position));  // Replace "myObject" with a key of your choice
+        fragment.setArguments(bundle);
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_for_you, fragment);
+        transaction.addToBackStack(null);  // Add the transaction to the back stack
+        transaction.commit();
     }
 }
