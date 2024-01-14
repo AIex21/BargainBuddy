@@ -68,7 +68,7 @@ public class ItemViewFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_item_view, container, false);
         // Inflate the layout for this fragment
         Bundle bundle = getArguments();
-        Promotion promotion = bundle.getParcelable("promotion");;
+        Promotion promotion = bundle.getParcelable("promotion");
 
         ImageView imageView = view.findViewById(R.id.imageView3);
         TextView title_textView = view.findViewById(R.id.textViewTitle);

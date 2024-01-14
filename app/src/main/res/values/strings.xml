@@ -40,6 +40,20 @@
     <string name="add_to_favorite">Add To Favourite</string>
     <string name="go_back_button"><![CDATA[<]]></string>
     <string name="available_until">Available Until:</string>
+    <string name="search_store_or_product">Search Store or Product</string>
+    <string name="fresh_fruits_and_vegetable">Fresh Fruits and Vegetable</string>
+    <string name="cooking_oil_and_ghee">Cooking Oil and Ghee</string>
+    <string name="fresh_fruits_n_and_vegetable">Fresh Fruits\n and Vegetable</string>
+    <string name="cooking_oil_n_and_ghee">Cooking Oil\n and Ghee</string>
+    <string name="meat_and_fish">Meat and Fish</string>
+    <string name="bakery_and_snacks">Bakery and Snacks</string>
+    <string name="dairy_and_eggs">Dairy and Eggs</string>
+    <string name="pasta_and_grains">Pasta and Grains</string>
+    <string name="beverages">Beverages</string>
+    <string name="organic">Organic</string>
+    <string name="baskets">Baskets</string>
+    <string name="others">Others</string>
+    <string name="search_product">Search Product</string>
 
     <string-array name="category">
         <item>Choose category</item>

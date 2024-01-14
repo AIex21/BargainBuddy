@@ -1,17 +1,18 @@
 package com.example.bargainbuddy;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -23,24 +24,21 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link ForYouFragment#newInstance} factory method to
+ * Use the {@link SearchForItemFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ForYouFragment extends Fragment implements InterfaceForRecyclerView{
+public class SearchForItemFragment extends Fragment implements InterfaceForRecyclerView{
 
     private RecyclerView recyclerView;
     private ArrayList<Promotion> promotionArrayList;
     private AdapterForRecyclerView myAdapter;
     private FirebaseDatabase db;
     private DatabaseReference db_reference;
-
-
+    private String title = "";
+    private String category = "";
+    private Button goBackButton;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -50,7 +48,7 @@ public class ForYouFragment extends Fragment implements InterfaceForRecyclerView
     private String mParam1;
     private String mParam2;
 
-    public ForYouFragment() {
+    public SearchForItemFragment() {
         // Required empty public constructor
     }
 
@@ -60,11 +58,11 @@ public class ForYouFragment extends Fragment implements InterfaceForRecyclerView
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment ForYouFragment.
+     * @return A new instance of fragment SearchForItemFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ForYouFragment newInstance(String param1, String param2) {
-        ForYouFragment fragment = new ForYouFragment();
+    public static SearchForItemFragment newInstance(String param1, String param2) {
+        SearchForItemFragment fragment = new SearchForItemFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -84,9 +82,22 @@ public class ForYouFragment extends Fragment implements InterfaceForRecyclerView
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_for_you, container, false);
 
-        recyclerView = view.findViewById(R.id.recyclerView);
+        View view = inflater.inflate(R.layout.fragment_search_for_item, container, false);
+
+        goBackButton = view.findViewById(R.id.go_back_button2);
+        goBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().getSupportFragmentManager().popBackStack();
+            }
+        });
+
+        Bundle bundle = getArguments();
+        title = bundle.getString("title");
+        category = bundle.getString("category");
+
+        recyclerView = view.findViewById(R.id.recyclerView2);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
 
@@ -104,8 +115,14 @@ public class ForYouFragment extends Fragment implements InterfaceForRecyclerView
 
     private void EventChangeListener() {
         db_reference = db.getReference("promotions");
+        Query query;
+        if (!title.equals("")) {
+            query = db_reference.orderByChild("title").equalTo(title);
+        } else {
+            query = db_reference.orderByChild("category").equalTo(category);
+        }
 
-        db_reference.addChildEventListener(new ChildEventListener() {
+        query.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 promotionArrayList.add(snapshot.getValue(Promotion.class));
@@ -141,7 +158,7 @@ public class ForYouFragment extends Fragment implements InterfaceForRecyclerView
         bundle.putParcelable("promotion", promotionArrayList.get(position));  // Replace "myObject" with a key of your choice
         fragment.setArguments(bundle);
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_for_you, fragment);
+        transaction.replace(R.id.fragment_search_for_item, fragment);
         transaction.addToBackStack(null);  // Add the transaction to the back stack
         transaction.commit();
     }
