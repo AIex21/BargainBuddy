@@ -106,7 +106,7 @@
                     android:textSize="20sp"/>
 
                 <Button
-                    android:id="@+id/upload_button"
+                    android:id="@+id/add_to_fav_button2"
                     android:layout_width="80dp"
                     android:layout_height="50dp"
                     android:layout_marginTop="10dp"

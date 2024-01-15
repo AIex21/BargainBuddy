@@ -13,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -39,6 +41,7 @@ public class ForYouFragment extends Fragment implements InterfaceForRecyclerView
     private AdapterForRecyclerView myAdapter;
     private FirebaseDatabase db;
     private DatabaseReference db_reference;
+    private ArrayList<String> promotionInFavourite;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -92,8 +95,9 @@ public class ForYouFragment extends Fragment implements InterfaceForRecyclerView
 
         db = FirebaseDatabase.getInstance("https://bargainbuddy-47407-default-rtdb.europe-west1.firebasedatabase.app/");
         promotionArrayList = new ArrayList<Promotion>();
-        myAdapter = new AdapterForRecyclerView(requireContext(), promotionArrayList, this);
-
+        promotionInFavourite = new ArrayList<String>();
+        favouriteList();
+        myAdapter = new AdapterForRecyclerView(requireContext(), promotionArrayList, this, promotionInFavourite);
         recyclerView.setAdapter(myAdapter);
 
         EventChangeListener();
@@ -103,6 +107,7 @@ public class ForYouFragment extends Fragment implements InterfaceForRecyclerView
     }
 
     private void EventChangeListener() {
+
         db_reference = db.getReference("promotions");
 
         db_reference.addChildEventListener(new ChildEventListener() {
@@ -139,10 +144,50 @@ public class ForYouFragment extends Fragment implements InterfaceForRecyclerView
         Fragment fragment = new ItemViewFragment();
         Bundle bundle = new Bundle();
         bundle.putParcelable("promotion", promotionArrayList.get(position));  // Replace "myObject" with a key of your choice
+        bundle.putStringArrayList("favourite", promotionInFavourite);
         fragment.setArguments(bundle);
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_for_you, fragment);
         transaction.addToBackStack(null);  // Add the transaction to the back stack
         transaction.commit();
+    }
+
+    @Override
+    public void favouriteList() {
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        String uid = currentUser.getUid();
+
+        FirebaseDatabase db = FirebaseDatabase.getInstance("https://bargainbuddy-47407-default-rtdb.europe-west1.firebasedatabase.app/");
+        DatabaseReference db_reference = db.getReference("favourite");
+
+        Query queryGetList = db_reference.orderByChild("uid").equalTo(uid);
+        queryGetList.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                        DataSnapshot promotionsNode = childSnapshot.child("promotionsID");
+
+                        if (promotionsNode.exists()) {
+                            // The promotionsID node exists for the user
+                            // Get the list of promotion IDs
+                            Iterable<DataSnapshot> children = promotionsNode.getChildren();
+
+                            for (DataSnapshot child : children) {
+                                String promotionID = child.getValue(String.class);
+                                promotionInFavourite.add(promotionID);
+                            }
+                        }
+                    }
+                }
+                myAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle errors
+            }
+        });
     }
 }

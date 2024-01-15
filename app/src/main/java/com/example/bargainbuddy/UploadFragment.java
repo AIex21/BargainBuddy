@@ -174,14 +174,17 @@ public class UploadFragment extends Fragment {
                     Toast.makeText(requireContext(), "Choose category", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                db_reference = db.getReference("promotions");
+                DatabaseReference db_reference_push = db_reference.push();
                 if (imageUri != null) {
                     String imageName = UUID.randomUUID().toString();
                     StorageReference imageRef = storage_reference.child(imageName);
-
+                    String id = db_reference_push.getKey();
                     imageRef.putFile(imageUri)
                             .addOnSuccessListener(taskSnapshot -> {
                                 imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
                                     Promotion promotion = new Promotion(
+                                            id,
                                             title,
                                             store,
                                             promoCode,
@@ -192,14 +195,16 @@ public class UploadFragment extends Fragment {
                                             expirationDate,
                                             uri.toString()
                                     );
-                                    db_reference = db.getReference("promotions");
-                                    db_reference.push().setValue(promotion);
+
+                                    db_reference_push.setValue(promotion);
                                     Toast.makeText(requireContext(), "Promotion uploaded successfully", Toast.LENGTH_SHORT).show();
                                 });
                             })
                             .addOnFailureListener(e -> Toast.makeText(requireContext(), "Failed to upload image", Toast.LENGTH_SHORT).show());
                 } else {
+                    String id = db_reference_push.getKey();
                     Promotion promotion = new Promotion(
+                            id,
                             title,
                             store,
                             promoCode,
@@ -210,8 +215,7 @@ public class UploadFragment extends Fragment {
                             expirationDate,
                             ""
                     );
-                    db_reference = db.getReference("promotions");
-                    db_reference.push().setValue(promotion);
+                    db_reference_push.setValue(promotion);
                     Toast.makeText(requireContext(), "Promotion uploaded successfully", Toast.LENGTH_SHORT).show();
                 }
             }

@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Promotion implements Parcelable {
+    private String id;
     private String title;
     private String store;
     private String promoCode;
@@ -23,7 +24,8 @@ public class Promotion implements Parcelable {
 
     public Promotion() {
     }
-    public Promotion(String title, String store, String promoCode, String description, String category, float previousPrice, float newPrice, String expirationDate, String imageURI) {
+    public Promotion(String id, String title, String store, String promoCode, String description, String category, float previousPrice, float newPrice, String expirationDate, String imageURI) {
+        this.id = id;
         this.title = title;
         this.store = store;
         this.promoCode = promoCode;
@@ -33,6 +35,14 @@ public class Promotion implements Parcelable {
         this.newPrice = newPrice;
         this.expirationDate = expirationDate;
         this.imageURI = imageURI;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getTitle() {

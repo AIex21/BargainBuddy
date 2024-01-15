@@ -76,7 +76,7 @@
             android:id="@+id/textView12"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:text="@string/upload_promotion"
             android:textColor="@color/black"
             android:textSize="24sp"
