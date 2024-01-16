@@ -118,11 +118,11 @@ public class AccountFragment extends Fragment {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         String username = (String)snapshot.child(uid).child("name").getValue();
                         String email = (String)snapshot.child(uid).child("email").getValue();
-                        String business = (String) snapshot.child(uid).child("business").getValue();
+                        boolean business = (Boolean) snapshot.child(uid).child("bussiness").getValue();
                         txtUserName.setText(username);
                         txtEmail.setText(email);
 
-                        if (business == "true") {
+                        if (business == true) {
                             userType.setText("Business");
                         }
                         else {

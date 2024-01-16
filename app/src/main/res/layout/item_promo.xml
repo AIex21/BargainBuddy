@@ -44,6 +44,13 @@
                     android:textSize="20sp"
                     android:textStyle="bold"/>
 
+                <ImageView
+                    android:id="@+id/checkImageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/icon_check"
+                    />
+
 
             </LinearLayout>
 

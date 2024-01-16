@@ -56,8 +56,7 @@ public class AdapterForRecyclerView extends RecyclerView.Adapter<AdapterForRecyc
 
         Promotion promo = promotionArrayList.get(position);
 
-        if (!promo.getImageURI().equals(""))
-        {
+        if (!promo.getImageURI().equals("")) {
             Picasso.get().load(promo.getImageURI()).into(holder.image);
         }
         holder.title.setText(promo.getTitle());
@@ -68,6 +67,12 @@ public class AdapterForRecyclerView extends RecyclerView.Adapter<AdapterForRecyc
         if (promotionInFavourite.contains(promo.getId())) {
             holder.addToFavButton.setEnabled(false);
             holder.addToFavButton.setBackgroundResource(R.drawable.round_grey_button);
+        }
+
+        if (promo.getCertified() == 0) {
+            holder.checkImageView.setVisibility(View.INVISIBLE);
+        } else {
+            holder.checkImageView.setVisibility(View.VISIBLE);
         }
     }
 
@@ -80,7 +85,7 @@ public class AdapterForRecyclerView extends RecyclerView.Adapter<AdapterForRecyc
 
         ArrayList<Promotion> promotionArrayList;
         ArrayList<String> promotionInFavourite;
-        ImageView image;
+        ImageView image, checkImageView;
         TextView title, store, previousPrice, newPrice;
         Button addToFavButton;
 
@@ -95,6 +100,7 @@ public class AdapterForRecyclerView extends RecyclerView.Adapter<AdapterForRecyc
             previousPrice = itemView.findViewById(R.id.previousPrice);
             newPrice = itemView.findViewById(R.id.newPrice);
             addToFavButton = itemView.findViewById(R.id.add_to_fav_button2);
+            checkImageView = itemView.findViewById(R.id.checkImageView);
 
             FirebaseAuth mAuth = FirebaseAuth.getInstance();
             FirebaseUser currentUser = mAuth.getCurrentUser();

@@ -84,6 +84,7 @@ public class ItemViewFragment extends Fragment {
         ArrayList<String> promotionInFavourite = bundle.getStringArrayList("favourite");
 
         ImageView imageView = view.findViewById(R.id.imageView3);
+        ImageView checkImageView = view.findViewById(R.id.checkImageView2);
         TextView title_textView = view.findViewById(R.id.textViewTitle);
         TextView store_textView = view.findViewById(R.id.textViewStore);
         TextView previousPrice_textView = view.findViewById(R.id.textViewPreviousPrice);
@@ -93,9 +94,15 @@ public class ItemViewFragment extends Fragment {
         TextView expirationDate_textView = view.findViewById(R.id.textViewExpirationDate);
         Button addToFavButton = view.findViewById(R.id.add_to_fav_button);
 
-        if(promotionInFavourite.contains(promotion.getId())) {
+        if (promotionInFavourite.contains(promotion.getId())) {
             addToFavButton.setEnabled(false);
             addToFavButton.setBackgroundResource(R.drawable.round_grey_button);
+        }
+
+        if (promotion.getCertified() == 0) {
+            checkImageView.setVisibility(View.INVISIBLE);
+        } else {
+            checkImageView.setVisibility(View.VISIBLE);
         }
 
         if (!promotion.getImageURI().equals(""))
