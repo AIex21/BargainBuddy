@@ -3,14 +3,26 @@ package com.example.bargainbuddy;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
+
+
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,6 +41,18 @@ public class AccountFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private FirebaseDatabase db;
+
+    private DatabaseReference db_reference;
+
+    private TextView txtUserName;
+
+    private TextView txtEmail;
+
+    private TextView userType;
+
+
 
     public AccountFragment() {
         // Required empty public constructor
@@ -77,6 +101,45 @@ public class AccountFragment extends Fragment {
 //            }
 //        });
 
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        String uid = currentUser.getUid();
+
+        FirebaseDatabase db = FirebaseDatabase.getInstance("https://bargainbuddy-47407-default-rtdb.europe-west1.firebasedatabase.app/");
+        DatabaseReference db_reference = db.getReference("users_info");
+
+        txtUserName = view.findViewById(R.id.txtUserName);
+        txtEmail = view.findViewById(R.id.txtEmail);
+        userType = view.findViewById(R.id.userType);
+
+        db_reference.addValueEventListener(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        String username = (String)snapshot.child(uid).child("name").getValue();
+                        String email = (String)snapshot.child(uid).child("email").getValue();
+                        String business = (String) snapshot.child(uid).child("business").getValue();
+                        txtUserName.setText(username);
+                        txtEmail.setText(email);
+
+                        if (business == "true") {
+                            userType.setText("Business");
+                        }
+                        else {
+                            userType.setText("User");
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+
         return view;
     }
+
 }
