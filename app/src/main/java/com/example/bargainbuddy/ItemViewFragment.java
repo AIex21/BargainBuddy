@@ -1,5 +1,7 @@
 package com.example.bargainbuddy;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -124,6 +127,24 @@ public class ItemViewFragment extends Fragment {
             public void onClick(View v) {
                 // Replace the current fragment with the ForYouFragment
                 getActivity().getSupportFragmentManager().popBackStack();
+            }
+        });
+
+        store_textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Open the store's website in a browser
+                String websiteUrl = promotion.getWebsite();
+                if (!websiteUrl.isEmpty()) {
+                    if (!websiteUrl.startsWith("http://") && !websiteUrl.startsWith("https://")) {
+                        websiteUrl = "http://" + websiteUrl;
+                    }
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(websiteUrl));
+                    startActivity(browserIntent);
+                } else {
+                    // Handle the case where the website URL is not available
+                    Toast.makeText(requireContext(), "Website URL not available", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
