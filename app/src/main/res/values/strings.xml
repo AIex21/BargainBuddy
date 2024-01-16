@@ -69,4 +69,15 @@
         <item>Baskets</item>
         <item>Others</item>
     </string-array>
+
+    <string name="loading">Loading…</string>
+    <string name="no_internet_connection">No internet connection!</string>
+    <string name="lbl_log_out">Log Out</string>
+    <string name="lbl_area">Area</string>
+    <string name="msg_myemail_gmail_c">myemail@gmail.com</string>
+    <string name="msg_uploaded_promot">Uploaded Promotions </string>
+    <string name="lbl_user_name">User Name</string>
+    <string name="msg_general_setting">General Settings</string>
+    <string name="lbl_notifications">Notifications </string>
+
 </resources>

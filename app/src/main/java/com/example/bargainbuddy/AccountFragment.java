@@ -67,15 +67,15 @@ public class AccountFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_account, container, false);
 
-        btn_logout = view.findViewById(R.id.logout);
-        btn_logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(getActivity(), Login.class);
-                startActivity(intent);
-            }
-        });
+//        btn_logout = view.findViewById(R.id.logout);
+//        btn_logout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                FirebaseAuth.getInstance().signOut();
+//                Intent intent = new Intent(getActivity(), Login.class);
+//                startActivity(intent);
+//            }
+//        });
 
         return view;
     }

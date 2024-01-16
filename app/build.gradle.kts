@@ -3,6 +3,7 @@ plugins {
     id("com.google.gms.google-services")
 }
 
+
 android {
     namespace = "com.example.bargainbuddy"
     compileSdk = 34
@@ -28,10 +29,13 @@ android {
         viewBinding = true
     }
 
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
+
 }
 
 dependencies {
@@ -47,7 +51,11 @@ dependencies {
     implementation("androidx.gridlayout:gridlayout:1.0.0")
     implementation("com.google.firebase:firebase-firestore:24.10.0")
     implementation("com.squareup.picasso:picasso:2.8")
+    implementation ("androidx.databinding:databinding-runtime:7.0.0")
+
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+
+
 }
