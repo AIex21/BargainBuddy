@@ -6,6 +6,10 @@
     android:layout_height="match_parent"
     tools:context=".AccountFragment">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/linearAccount"
         style="@style/groupStylewhite_A700"
@@ -365,7 +369,7 @@
                 android:background="@color/gray_300" />
 
             <LinearLayout
-                android:id="@+id/linearGoogle"
+                android:id="@+id/linearLogOut"
                 style="@style/groupStylegray_100cornerRadius"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -405,4 +409,5 @@
             </LinearLayout>
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </FrameLayout>

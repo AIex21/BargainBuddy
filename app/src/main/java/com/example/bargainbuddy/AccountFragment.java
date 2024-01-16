@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -20,6 +21,7 @@ import com.google.firebase.auth.FirebaseAuth;
 public class AccountFragment extends Fragment {
 
     Button btn_logout;
+    LinearLayout logOut;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -68,14 +70,15 @@ public class AccountFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_account, container, false);
 
 //        btn_logout = view.findViewById(R.id.logout);
-//        btn_logout.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                FirebaseAuth.getInstance().signOut();
-//                Intent intent = new Intent(getActivity(), Login.class);
-//                startActivity(intent);
-//            }
-//        });
+        logOut = view.findViewById(R.id.linearLogOut);
+        logOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(getActivity(), Login.class);
+                startActivity(intent);
+            }
+        });
 
         return view;
     }

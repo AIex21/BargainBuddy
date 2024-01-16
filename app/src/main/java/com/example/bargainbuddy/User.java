@@ -5,7 +5,7 @@ public class User {
     private String name;
     private String email;
     private String uid;
-    private boolean isBussiness; // for bussinesses True, for users False;
+    private boolean isBussiness; // for businesses True, for users False;
     private String website;
 
     public User() {

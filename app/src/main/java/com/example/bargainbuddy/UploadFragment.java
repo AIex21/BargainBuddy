@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -154,7 +155,6 @@ public class UploadFragment extends Fragment {
                 String category = category_spinner.getSelectedItem().toString();
                 String previousPriceText = previousPrice_editText.getText().toString();
                 String website = website_editText.getText().toString();
-                boolean isCertified;
                 Float previousPrice;
                 if (TextUtils.isEmpty(previousPriceText)) {
                     previousPrice = (float) -1;
@@ -168,7 +168,7 @@ public class UploadFragment extends Fragment {
                 } else {
                     newPrice = Float.valueOf(newPriceText);
                 }
-                String expirationDate =  expirationDate_editText.getText().toString();
+                String expirationDate = expirationDate_editText.getText().toString();
 
                 if (TextUtils.isEmpty(title)) {
                     Toast.makeText(requireContext(), "Enter title", Toast.LENGTH_SHORT).show();
@@ -186,55 +186,32 @@ public class UploadFragment extends Fragment {
                     Toast.makeText(requireContext(), "Choose category", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                FirebaseUser currentUser = mAuth.getCurrentUser();
+                String uid = currentUser.getUid();
+                db_reference = db.getReference("users_info").child(uid);
+                db_reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            boolean isCertified = dataSnapshot.child("bussiness").getValue(Boolean.class);
+                            int isCertifiedINT = 0;
+                            if (isCertified) {
+                                isCertifiedINT = 1;
+                            }
+                            createPromotion(title, store, promoCode, description, category, previousPrice,
+                                    newPrice, expirationDate, isCertifiedINT, website);
 
-                db_reference = db.getReference("promotions");
-                DatabaseReference db_reference_push = db_reference.push();
-                if (imageUri != null) {
-                    String imageName = UUID.randomUUID().toString();
-                    StorageReference imageRef = storage_reference.child(imageName);
-                    String id = db_reference_push.getKey();
-                    imageRef.putFile(imageUri)
-                            .addOnSuccessListener(taskSnapshot -> {
-                                imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                                    Promotion promotion = new Promotion(
-                                            id,
-                                            title,
-                                            store,
-                                            promoCode,
-                                            description,
-                                            category,
-                                            previousPrice,
-                                            newPrice,
-                                            expirationDate,
-                                            uri.toString(),
-                                            false,
-                                            website
-                                    );
+                        } else {
+                            Toast.makeText(requireContext(), "A problem has occurred. Please try again later.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
 
-                                    db_reference_push.setValue(promotion);
-                                    Toast.makeText(requireContext(), "Promotion uploaded successfully", Toast.LENGTH_SHORT).show();
-                                });
-                            })
-                            .addOnFailureListener(e -> Toast.makeText(requireContext(), "Failed to upload image", Toast.LENGTH_SHORT).show());
-                } else {
-                    String id = db_reference_push.getKey();
-                    Promotion promotion = new Promotion(
-                            id,
-                            title,
-                            store,
-                            promoCode,
-                            description,
-                            category,
-                            previousPrice,
-                            newPrice,
-                            expirationDate,
-                            "",
-                            false,
-                            website
-                    );
-                    db_reference_push.setValue(promotion);
-                    Toast.makeText(requireContext(), "Promotion uploaded successfully", Toast.LENGTH_SHORT).show();
-                }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        // Handle the error
+                    }
+                });
             }
         });
 
@@ -242,26 +219,56 @@ public class UploadFragment extends Fragment {
         return view;
     }
 
-//    public boolean isCertified() {
-//        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-//        FirebaseUser currentUser = mAuth.getCurrentUser();
-//        String uid = currentUser.getUid();
-//        db_reference = db.getReference("users_info").child(uid);
-//        db_reference.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                if (dataSnapshot.exists()) {
-//                    boolean isCertified = false;
-//                    isCertified = dataSnapshot.child("isCertified").getValue(Boolean.class);
-//                    return isCertified;
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//                // Handle the error
-//            }
-//        });
-//        return isCertified;
-//    }
+    public void createPromotion(String title, String store, String promoCode, String description,
+                                String category, float previousPrice, float newPrice, String expirationDate,
+                                int isCertified, String website) {
+        db_reference = db.getReference("promotions");
+        DatabaseReference db_reference_push = db_reference.push();
+        if (imageUri != null) {
+            String imageName = UUID.randomUUID().toString();
+            StorageReference imageRef = storage_reference.child(imageName);
+            String id = db_reference_push.getKey();
+            imageRef.putFile(imageUri)
+                    .addOnSuccessListener(taskSnapshot -> {
+                        imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                            Promotion promotion = new Promotion(
+                                    id,
+                                    title,
+                                    store,
+                                    promoCode,
+                                    description,
+                                    category,
+                                    previousPrice,
+                                    newPrice,
+                                    expirationDate,
+                                    uri.toString(),
+                                    isCertified,
+                                    website
+                            );
+                            db_reference_push.setValue(promotion);
+                            Toast.makeText(requireContext(), "Promotion uploaded successfully", Toast.LENGTH_SHORT).show();
+                        });
+                    })
+                    .addOnFailureListener(e -> Toast.makeText(requireContext(), "Failed to upload image", Toast.LENGTH_SHORT).show());
+        } else {
+            String id = db_reference_push.getKey();
+            Promotion promotion = new Promotion(
+                    id,
+                    title,
+                    store,
+                    promoCode,
+                    description,
+                    category,
+                    previousPrice,
+                    newPrice,
+                    expirationDate,
+                    "",
+                    isCertified,
+                    website
+            );
+            db_reference_push.setValue(promotion);
+            Toast.makeText(requireContext(), "Promotion uploaded successfully", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 }
