@@ -5,12 +5,14 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
@@ -91,19 +93,28 @@ public class AccountFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_account, container, false);
 
-//        btn_logout = view.findViewById(R.id.logout);
-//        btn_logout.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                FirebaseAuth.getInstance().signOut();
-//                Intent intent = new Intent(getActivity(), Login.class);
-//                startActivity(intent);
-//            }
-//        });
+        LinearLayout linearLogOut = view.findViewById(R.id.linearLogOut);
+        LinearLayout linearUploadedPromotion = view.findViewById(R.id.linearUploadedPromotion);
+
+        linearLogOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(getActivity(), Login.class);
+                startActivity(intent);
+            }
+        });
 
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         String uid = currentUser.getUid();
+
+        linearUploadedPromotion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToSearchItems(uid);
+            }
+        });
 
         FirebaseDatabase db = FirebaseDatabase.getInstance("https://bargainbuddy-47407-default-rtdb.europe-west1.firebasedatabase.app/");
         DatabaseReference db_reference = db.getReference("users_info");
@@ -140,6 +151,19 @@ public class AccountFragment extends Fragment {
 
 
         return view;
+    }
+
+    public void goToSearchItems(String uid) {
+        Fragment fragment = new SearchForItemFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("title", "");
+        bundle.putString("category", "");
+        bundle.putString("uid", uid);
+        fragment.setArguments(bundle);
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_account, fragment);
+        transaction.addToBackStack(null);  // Add the transaction to the back stack
+        transaction.commit();
     }
 
 }

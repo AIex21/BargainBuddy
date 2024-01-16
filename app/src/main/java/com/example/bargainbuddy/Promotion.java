@@ -23,12 +23,13 @@ public class Promotion implements Parcelable {
     private String imageURI;
     private int isCertified;
     private String website;
+    private String userId;
 
     public Promotion() {
     }
     public Promotion(String id, String title, String store, String promoCode, String description,
                      String category, float previousPrice, float newPrice, String expirationDate,
-                     String imageURI, int isCertified, String website) {
+                     String imageURI, int isCertified, String website, String userId) {
         this.id = id;
         this.title = title;
         this.store = store;
@@ -41,6 +42,7 @@ public class Promotion implements Parcelable {
         this.imageURI = imageURI;
         this.isCertified = isCertified;
         this.website = website;
+        this.userId = userId;
     }
 
     public String getId() {
@@ -139,6 +141,14 @@ public class Promotion implements Parcelable {
         this.website = website;
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
     // Parcelable implementation
     protected Promotion(Parcel in) {
         title = in.readString();
@@ -152,6 +162,7 @@ public class Promotion implements Parcelable {
         imageURI = in.readString();
         isCertified = in.readInt();;
         website = in.readString();
+        userId = in.readString();
     }
 
     public static final Creator<Promotion> CREATOR = new Creator<Promotion>() {
@@ -184,5 +195,6 @@ public class Promotion implements Parcelable {
         dest.writeString(imageURI);
         dest.writeInt(isCertified);
         dest.writeString(website);
+        dest.writeString(userId);
     }
 }

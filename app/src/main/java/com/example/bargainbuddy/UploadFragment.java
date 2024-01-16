@@ -200,7 +200,7 @@ public class UploadFragment extends Fragment {
                                 isCertifiedINT = 1;
                             }
                             createPromotion(title, store, promoCode, description, category, previousPrice,
-                                    newPrice, expirationDate, isCertifiedINT, website);
+                                    newPrice, expirationDate, isCertifiedINT, website, uid);
 
                         } else {
                             Toast.makeText(requireContext(), "A problem has occurred. Please try again later.", Toast.LENGTH_SHORT).show();
@@ -221,7 +221,7 @@ public class UploadFragment extends Fragment {
 
     public void createPromotion(String title, String store, String promoCode, String description,
                                 String category, float previousPrice, float newPrice, String expirationDate,
-                                int isCertified, String website) {
+                                int isCertified, String website, String uid) {
         db_reference = db.getReference("promotions");
         DatabaseReference db_reference_push = db_reference.push();
         if (imageUri != null) {
@@ -243,7 +243,8 @@ public class UploadFragment extends Fragment {
                                     expirationDate,
                                     uri.toString(),
                                     isCertified,
-                                    website
+                                    website,
+                                    uid
                             );
                             db_reference_push.setValue(promotion);
                             Toast.makeText(requireContext(), "Promotion uploaded successfully", Toast.LENGTH_SHORT).show();
@@ -264,7 +265,8 @@ public class UploadFragment extends Fragment {
                     expirationDate,
                     "",
                     isCertified,
-                    website
+                    website,
+                    uid
             );
             db_reference_push.setValue(promotion);
             Toast.makeText(requireContext(), "Promotion uploaded successfully", Toast.LENGTH_SHORT).show();

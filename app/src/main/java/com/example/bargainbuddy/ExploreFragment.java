@@ -171,6 +171,7 @@ public class ExploreFragment extends Fragment {
         Bundle bundle = new Bundle();
         bundle.putString("title", title);
         bundle.putString("category", category);
+        bundle.putString("uid", "");
         fragment.setArguments(bundle);
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_explore, fragment);

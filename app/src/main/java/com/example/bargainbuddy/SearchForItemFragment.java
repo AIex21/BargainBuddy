@@ -40,6 +40,7 @@ public class SearchForItemFragment extends Fragment implements InterfaceForRecyc
     private DatabaseReference db_reference;
     private String title = "";
     private String category = "";
+    private String uid = "";
     private Button goBackButton;
     private ArrayList<String >promotionInFavourite;
     // TODO: Rename parameter arguments, choose names that match
@@ -99,6 +100,7 @@ public class SearchForItemFragment extends Fragment implements InterfaceForRecyc
         Bundle bundle = getArguments();
         title = bundle.getString("title");
         category = bundle.getString("category");
+        uid = bundle.getString("uid");
 
         recyclerView = view.findViewById(R.id.recyclerView2);
         recyclerView.setHasFixedSize(true);
@@ -123,8 +125,10 @@ public class SearchForItemFragment extends Fragment implements InterfaceForRecyc
         Query query;
         if (!title.equals("")) {
             query = db_reference.orderByChild("title").equalTo(title);
-        } else {
+        } else if (!category.equals("")) {
             query = db_reference.orderByChild("category").equalTo(category);
+        } else {
+            query = db_reference.orderByChild("userId").equalTo(uid);
         }
 
         query.addChildEventListener(new ChildEventListener() {
