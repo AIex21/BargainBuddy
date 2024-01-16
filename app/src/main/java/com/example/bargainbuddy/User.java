@@ -6,15 +6,17 @@ public class User {
     private String email;
     private String uid;
     private boolean isBussiness; // for bussinesses True, for users False;
+    private String website;
 
     public User() {
     }
 
-    public User(String name, String email, String uid, boolean role) {
+    public User(String name, String email, String uid, boolean role, String website) {
         this.name = name;
         this.email = email;
         this.uid = uid;
         this.isBussiness = role;
+        this.website = website;
     }
 
     public String getName() {
@@ -47,5 +49,13 @@ public class User {
 
     public void setRole(boolean isBussiness) {
         this.isBussiness = isBussiness;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
     }
 }

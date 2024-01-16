@@ -54,6 +54,7 @@
     <string name="baskets">Baskets</string>
     <string name="others">Others</string>
     <string name="search_product">Search Product</string>
+    <string name="store_website_link">Store website link</string>
 
     <string-array name="category">
         <item>Choose category</item>

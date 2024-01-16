@@ -21,10 +21,14 @@ public class Promotion implements Parcelable {
     private float newPrice;
     private String expirationDate;
     private String imageURI;
+    private boolean isCertified;
+    private String website;
 
     public Promotion() {
     }
-    public Promotion(String id, String title, String store, String promoCode, String description, String category, float previousPrice, float newPrice, String expirationDate, String imageURI) {
+    public Promotion(String id, String title, String store, String promoCode, String description,
+                     String category, float previousPrice, float newPrice, String expirationDate,
+                     String imageURI, boolean isCertified, String website) {
         this.id = id;
         this.title = title;
         this.store = store;
@@ -117,6 +121,22 @@ public class Promotion implements Parcelable {
         this.imageURI = imageURI;
     }
 
+    public boolean isCertified() {
+        return isCertified;
+    }
+
+    public void setCertified(boolean certified) {
+        isCertified = certified;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+
     // Parcelable implementation
     protected Promotion(Parcel in) {
         title = in.readString();
@@ -128,6 +148,8 @@ public class Promotion implements Parcelable {
         newPrice = in.readFloat();
         expirationDate = in.readString();
         imageURI = in.readString();
+        isCertified = in.readInt() == 1;;
+        website = in.readString();
     }
 
     public static final Creator<Promotion> CREATOR = new Creator<Promotion>() {
@@ -158,5 +180,7 @@ public class Promotion implements Parcelable {
         dest.writeFloat(newPrice);
         dest.writeString(expirationDate);
         dest.writeString(imageURI);
+        dest.writeInt(isCertified ? 1 : 0);
+        dest.writeString(website);
     }
 }

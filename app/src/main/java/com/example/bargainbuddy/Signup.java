@@ -28,7 +28,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class Signup extends AppCompatActivity {
 
-    EditText editTextEmail,editTextPassword, editTextName;
+    EditText editTextEmail,editTextPassword, editTextName, editTextWebsite;
     Button buttonReg;
     FirebaseAuth mAuth;
     FirebaseDatabase db;
@@ -56,12 +56,27 @@ public class Signup extends AppCompatActivity {
         editTextName = findViewById(R.id.editTextText);
         editTextEmail = findViewById(R.id.editTextTextEmailAddress2);
         editTextPassword = findViewById(R.id.editTextTextPassword2);
+        editTextWebsite = findViewById(R.id.editTextTextWebsite);
         buttonReg = findViewById(R.id.button2);
         mAuth = FirebaseAuth.getInstance();
         progressBar = findViewById(R.id.progressBar2);
         loginNow = findViewById(R.id.loginNow);
         db = FirebaseDatabase.getInstance("https://bargainbuddy-47407-default-rtdb.europe-west1.firebasedatabase.app/");
         checkBox = findViewById(R.id.checkBox);
+
+        checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Code to be executed when the CheckBox is pressed
+                if (checkBox.isChecked()) {
+                    editTextWebsite.setEnabled(true);
+                    editTextWebsite.setVisibility(View.VISIBLE);
+                } else {
+                    editTextWebsite.setEnabled(false);
+                    editTextWebsite.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
 
         loginNow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,11 +91,16 @@ public class Signup extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 progressBar.setVisibility(View.VISIBLE);
-                String name, email, password;
+                String name, email, password, website;
                 name = String.valueOf(editTextName.getText());
                 email = String.valueOf(editTextEmail.getText());
                 password = String.valueOf(editTextPassword.getText());
                 boolean isBusiness = checkBox.isChecked();
+                if (isBusiness) {
+                    website = String.valueOf(editTextWebsite.getText());
+                } else {
+                    website = "";
+                }
 
 
                 if (TextUtils.isEmpty(name)) {
@@ -108,7 +128,7 @@ public class Signup extends AppCompatActivity {
                                     FirebaseUser firebaseUser = mAuth.getCurrentUser();
                                     if (firebaseUser != null) {
                                         String uid = firebaseUser.getUid();
-                                        User user = new User(name, email, uid, isBusiness);
+                                        User user = new User(name, email, uid, isBusiness, website);
                                         reference = db.getReference("users_info");
                                         reference.child(uid).setValue(user);
 

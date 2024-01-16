@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.text.TextUtils;
@@ -20,8 +21,14 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -37,7 +44,9 @@ public class UploadFragment extends Fragment {
     private Spinner category_spinner;
     private Uri imageUri;
     private Button upload_button, upload_image_button;
-    private EditText title_editText, store_editText, promoCode_editText, description_editText, previousPrice_editText, newPrice_editText, expirationDate_editText;
+    private EditText title_editText, store_editText, promoCode_editText,
+            description_editText, previousPrice_editText, newPrice_editText,
+            expirationDate_editText, website_editText;
     private FirebaseDatabase db;
     private DatabaseReference db_reference;
     private FirebaseStorage storage;
@@ -116,6 +125,7 @@ public class UploadFragment extends Fragment {
         previousPrice_editText = view.findViewById(R.id.previousPrice_editText);
         newPrice_editText = view.findViewById(R.id.newPrice_editText);
         expirationDate_editText = view.findViewById(R.id.expirationDate_editText);
+        website_editText = view.findViewById(R.id.editTextTextWebsite2);
         upload_button = view.findViewById(R.id.upload_button);
         upload_image_button = view.findViewById(R.id.upload_image_button);
 
@@ -143,6 +153,8 @@ public class UploadFragment extends Fragment {
                 String description = description_editText.getText().toString();
                 String category = category_spinner.getSelectedItem().toString();
                 String previousPriceText = previousPrice_editText.getText().toString();
+                String website = website_editText.getText().toString();
+                boolean isCertified;
                 Float previousPrice;
                 if (TextUtils.isEmpty(previousPriceText)) {
                     previousPrice = (float) -1;
@@ -174,6 +186,7 @@ public class UploadFragment extends Fragment {
                     Toast.makeText(requireContext(), "Choose category", Toast.LENGTH_SHORT).show();
                     return;
                 }
+
                 db_reference = db.getReference("promotions");
                 DatabaseReference db_reference_push = db_reference.push();
                 if (imageUri != null) {
@@ -193,7 +206,9 @@ public class UploadFragment extends Fragment {
                                             previousPrice,
                                             newPrice,
                                             expirationDate,
-                                            uri.toString()
+                                            uri.toString(),
+                                            false,
+                                            website
                                     );
 
                                     db_reference_push.setValue(promotion);
@@ -213,7 +228,9 @@ public class UploadFragment extends Fragment {
                             previousPrice,
                             newPrice,
                             expirationDate,
-                            ""
+                            "",
+                            false,
+                            website
                     );
                     db_reference_push.setValue(promotion);
                     Toast.makeText(requireContext(), "Promotion uploaded successfully", Toast.LENGTH_SHORT).show();
@@ -224,4 +241,27 @@ public class UploadFragment extends Fragment {
         // Inflate the layout for this fragment
         return view;
     }
+
+//    public boolean isCertified() {
+//        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+//        FirebaseUser currentUser = mAuth.getCurrentUser();
+//        String uid = currentUser.getUid();
+//        db_reference = db.getReference("users_info").child(uid);
+//        db_reference.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                if (dataSnapshot.exists()) {
+//                    boolean isCertified = false;
+//                    isCertified = dataSnapshot.child("isCertified").getValue(Boolean.class);
+//                    return isCertified;
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//                // Handle the error
+//            }
+//        });
+//        return isCertified;
+//    }
 }
