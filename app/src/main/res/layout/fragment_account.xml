@@ -105,6 +105,13 @@
                             android:singleLine="true"
                             android:text="@string/msg_myemail_gmail_c"
                             tools:text="@string/msg_myemail_gmail_c" />
+
+                        <TextView
+                            android:id="@+id/userType"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="TextView" />
+
                     </LinearLayout>
                 </LinearLayout>
             </androidx.appcompat.widget.Toolbar>
@@ -149,7 +156,7 @@
                     <TextView
                         android:id="@+id/txtLanguage"
                         style="@style/txtPoppinsmedium20"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_25pxh"
                         android:layout_marginTop="@dimen/_10pxv"
@@ -210,7 +217,7 @@
                     <TextView
                         android:id="@+id/txtArea"
                         style="@style/txtPoppinsmedium20"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_30pxh"
                         android:layout_marginTop="@dimen/_3pxv"
@@ -272,7 +279,7 @@
                     <TextView
                         android:id="@+id/txtGeneralSetting"
                         style="@style/txtPoppinsmedium20"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_26pxh"
                         android:layout_marginTop="@dimen/_5pxv"
@@ -334,7 +341,7 @@
                     <TextView
                         android:id="@+id/txtLanguageOne"
                         style="@style/txtPoppinsmedium20"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_29pxh"
                         android:layout_marginTop="@dimen/_2pxv"
@@ -407,6 +414,18 @@
                     android:text="@string/lbl_log_out"
                     tools:text="@string/lbl_log_out" />
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
+
+            <TextView
+                android:id="@+id/textView27"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
