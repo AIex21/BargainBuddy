@@ -79,5 +79,9 @@
     <string name="lbl_user_name">User Name</string>
     <string name="msg_general_setting">General Settings</string>
     <string name="lbl_notifications">Notifications </string>
+    <string name="dd_mm_yyyy">DD/MM/YYYY</string>
+    <string name="delete_from_favourite">Delete from favourite</string>
+    <string name="delete_from_favourite_">DELETE FROM FAVOURITE</string>
+    <string name="x">X</string>
 
 </resources>

@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/fragment_upload"
     tools:context=".UploadFragment">
 <FrameLayout
     android:layout_width="match_parent"
@@ -239,7 +240,7 @@
             android:layout_marginTop="8dp"
             android:background="@drawable/round_edit_text_grey"
             android:ems="10"
-            android:hint="@string/_00_00_00"
+            android:hint="@string/dd_mm_yyyy"
             android:inputType="date"
             android:paddingStart="12dp"
             app:layout_constraintEnd_toEndOf="parent"

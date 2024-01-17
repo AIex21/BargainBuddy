@@ -65,8 +65,11 @@ public class AdapterForRecyclerView extends RecyclerView.Adapter<AdapterForRecyc
         holder.newPrice.setText(String.valueOf(promo.getNewPrice()));
 
         if (promotionInFavourite.contains(promo.getId())) {
-            holder.addToFavButton.setEnabled(false);
-            holder.addToFavButton.setBackgroundResource(R.drawable.round_grey_button);
+            holder.addToFavButton.setText(R.string.x);
+            holder.addToFavButton.setBackgroundResource(R.drawable.round_red_button);
+        } else {
+            holder.addToFavButton.setText(R.string.plus);
+            holder.addToFavButton.setBackgroundResource(R.drawable.round_green_button);
         }
 
         if (promo.getCertified() == 0) {
@@ -137,7 +140,36 @@ public class AdapterForRecyclerView extends RecyclerView.Adapter<AdapterForRecyc
                                     // Iterate through each child and update the desired node
                                     String key = childSnapshot.getKey();
                                     if (key != null) {
-                                        db_reference.child(key).child("promotionsID").push().setValue(newPromotionID);
+                                        if (addToFavButton.getText().toString().equals("+")) {
+                                            db_reference.child(key).child("promotionsID").push().setValue(newPromotionID);
+                                            addToFavButton.setText(R.string.x);
+                                            addToFavButton.setBackgroundResource(R.drawable.round_red_button);
+                                        } else {
+                                            db_reference.child(key).child("promotionsID").addListenerForSingleValueEvent(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                    for (DataSnapshot promotionIdSnapshot : dataSnapshot.getChildren()) {
+                                                        String promotionId = promotionIdSnapshot.getValue(String.class);
+                                                        if (promotionId != null && promotionId.equals(newPromotionID)) {
+                                                            // Found the parent node, you can now delete it
+                                                            String keyToDelete = promotionIdSnapshot.getKey();
+                                                            if (keyToDelete != null) {
+                                                                db_reference.child(key).child("promotionsID").child(keyToDelete).removeValue();
+                                                                addToFavButton.setText(R.string.plus);
+                                                                addToFavButton.setBackgroundResource(R.drawable.round_green_button);
+                                                            }
+                                                            return; // Stop iterating once you find and delete the node
+                                                        }
+                                                    }
+                                                    // Promotion ID not found in the database
+                                                }
+
+                                                @Override
+                                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                                                    // Handle the error
+                                                }
+                                            });
+                                        }
                                     }
                                 }
                             }
@@ -154,8 +186,6 @@ public class AdapterForRecyclerView extends RecyclerView.Adapter<AdapterForRecyc
                             // Handle errors
                         }
                     });
-                    addToFavButton.setEnabled(false);
-                    addToFavButton.setBackgroundResource(R.drawable.round_grey_button);
                 }
             });
         }

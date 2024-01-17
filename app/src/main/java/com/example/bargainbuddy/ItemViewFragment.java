@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -98,8 +101,11 @@ public class ItemViewFragment extends Fragment {
         Button addToFavButton = view.findViewById(R.id.add_to_fav_button);
 
         if (promotionInFavourite.contains(promotion.getId())) {
-            addToFavButton.setEnabled(false);
-            addToFavButton.setBackgroundResource(R.drawable.round_grey_button);
+            addToFavButton.setText(R.string.delete_from_favourite_);
+            addToFavButton.setBackgroundResource(R.drawable.round_red_button);
+        } else {
+            addToFavButton.setText(R.string.add_to_favorite);
+            addToFavButton.setBackgroundResource(R.drawable.round_green_button);
         }
 
         if (promotion.getCertified() == 0) {
@@ -166,7 +172,36 @@ public class ItemViewFragment extends Fragment {
                                 // Iterate through each child and update the desired node
                                 String key = childSnapshot.getKey();
                                 if (key != null) {
-                                    db_reference.child(key).child("promotionsID").push().setValue(promotion.getId());
+                                    if (addToFavButton.getText().toString().equals("Add To Favourite")) {
+                                        db_reference.child(key).child("promotionsID").push().setValue(promotion.getId());
+                                        addToFavButton.setText(R.string.delete_from_favourite_);
+                                        addToFavButton.setBackgroundResource(R.drawable.round_red_button);
+                                    } else {
+                                        db_reference.child(key).child("promotionsID").addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                for (DataSnapshot promotionIdSnapshot : dataSnapshot.getChildren()) {
+                                                    String promotionId = promotionIdSnapshot.getValue(String.class);
+                                                    if (promotionId != null && promotionId.equals(promotion.getId())) {
+                                                        // Found the parent node, you can now delete it
+                                                        String keyToDelete = promotionIdSnapshot.getKey();
+                                                        if (keyToDelete != null) {
+                                                            db_reference.child(key).child("promotionsID").child(keyToDelete).removeValue();
+                                                            addToFavButton.setText(R.string.add_to_favorite);
+                                                            addToFavButton.setBackgroundResource(R.drawable.round_green_button);
+                                                        }
+                                                        return; // Stop iterating once you find and delete the node
+                                                    }
+                                                }
+                                                // Promotion ID not found in the database
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                                // Handle the error
+                                            }
+                                        });
+                                    }
                                 }
                             }
                         }
@@ -183,8 +218,6 @@ public class ItemViewFragment extends Fragment {
                         // Handle errors
                     }
                 });
-                addToFavButton.setEnabled(false);
-                addToFavButton.setBackgroundResource(R.drawable.round_grey_button);
             }
         });
         return view;
